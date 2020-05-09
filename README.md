@@ -35,9 +35,6 @@ The following table describes all the classes in this project.
 | Loadbalancer | Represents the interface between servers and clients. He receives requests from clients and by applying Round Robin he chooses a server to execute the customer's request. He is also responsible for returning the values to the clients.|
 
 
-## Contribution
-This project is carried out as part of a practical work in class. He was supervised by Dr. Mariem Lahami.
-
 ### Authors:
  - Deep Mistry
 
