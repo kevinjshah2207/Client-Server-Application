@@ -32,7 +32,7 @@ The following table describes all the classes in this project.
 |Client | Represents a client of the system. A client connects to the load balancer and asks for the solution of a mathematical equation (ex: addition of two numbers).
 |Server| Represents a server connected to the loadbalancer. A server receives a mathematical equation and returns the solution to the loadbalancer.
 | Equation | Represents a mathematical problem. This class offers two methods: generate (): generates a simple mathematical equation. calculate (equation): solves a mathematical equation and return the solution.
-| Loadbalancer | Represents the interface between servers and clients. He receives requests from clients and by applying Round Robin he chooses a server to execute the customer's request. He is also responsible for returning the values to the clients.|
+| Loadbalancer | Represents the interface between servers and clients. It receives requests from clients and by applying Round Robin he chooses a server to execute the customer's request. He is also responsible for returning the values to the clients.|
 
 
 ### Authors:
