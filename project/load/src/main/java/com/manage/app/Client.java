@@ -2,8 +2,6 @@ package com.manage.app;
 
 import java.io.*;
 import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.Scanner;
 
 
 import java.awt.event.*;
@@ -11,17 +9,19 @@ import javax.swing.*;
 
 public class Client extends JFrame implements ActionListener {
 
-    JTextField tf1,tf2,tf3;
+    private static final long serialVersionUID = 1L;
+    JTextField tf1, tf2, tf3;
     JLabel jl1;
-    JButton b1,b2;
+    JButton b1,b2,b3;
     JFrame f;
     JTable j;
     static Socket theSocket;
-    static BufferedReader theInputStream;
-    static PrintStream theOutputStream;
+    static BufferedReader theInputStream,theInputStream2;
+    static PrintStream theOutputStream,theOutputStream2;
     static String rec = null;
 
     Client() {
+
         f = new JFrame();
         tf1 = new JTextField();
         tf1.setBounds(50, 150, 150, 20);
@@ -34,27 +34,22 @@ public class Client extends JFrame implements ActionListener {
         b1.setBounds(50, 300, 100, 50);
         b2 = new JButton("Exit");
         b2.setBounds(170, 300, 100, 50);
+    
         b1.addActionListener(this);
         b2.addActionListener(this);
-
-        String[] rows=rec.split(":");
+        
+        String[] rows= rec.split(":");
         String[][] data=new String[rows.length][3];
         int ind=0;
         for(ind=0;ind<rows.length;ind++){
             data[ind]=rows[ind].split(";");
         }
 
-
-
-        String[] columnNames = { "Name", "Roll Number", "Department" };
-
-
-        j = new JTable(data, columnNames);
-        j.setBounds(100, 350, 300, 300);
+        String[] columnNames = { "Name", "Roll Number", "Age" };
+         j = new JTable(data, columnNames);
+         j.setBounds(100, 350, 300, 300);
 
         JScrollPane sp = new JScrollPane(j);
-
-
         f.add(tf1);
         f.add(tf2);
         f.add(tf3);
@@ -63,10 +58,8 @@ public class Client extends JFrame implements ActionListener {
         f.add(sp);
         f.setSize(700, 700);
         f.setVisible(true);
-
-
     }
-
+    
     @SuppressWarnings("empty-statement")
     public static void main(String[] args) throws IOException {
         theSocket = null;
@@ -75,35 +68,33 @@ public class Client extends JFrame implements ActionListener {
         theSocket = new Socket("127.0.0.1", 6000);
         theOutputStream = new PrintStream(theSocket.getOutputStream());
         theInputStream = new BufferedReader(new InputStreamReader(theSocket.getInputStream()));
-        theOutputStream.println("con...");
-        rec=theInputStream.readLine();
-
+        theOutputStream.println("read");
+        rec = theInputStream.readLine(); 
         new Client();
-
-
-
-        Scanner scan=new Scanner(System.in);
-        scan.next();
     }
 
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        String argument1=tf1.getText();
-        String argument2=tf2.getText();
-        String argument3=tf3.getText();
-        String argument=argument1+";"+argument2+";"+argument3;
+        
+        String argument="";
         if(e.getSource()==b1){
-            try {
-
-                theOutputStream.println(argument);
-                System.out.println(theInputStream.readLine());
-
-            } catch (UnknownHostException e1) {
-            } catch (IOException e1) {
-            }
+            String argument1=tf1.getText();
+            String argument2=tf2.getText();
+            String argument3=tf3.getText();
+            argument = argument1+";"+argument2+";"+argument3;
         }else if(e.getSource()==b2){
-
+            argument = "exit";
+        }
+        try{
+            theSocket = new Socket("127.0.0.1", 6000);
+            theOutputStream = new PrintStream(theSocket.getOutputStream());
+            theInputStream = new BufferedReader(new InputStreamReader(theSocket.getInputStream()));
+            theOutputStream.println(argument);
+            rec = theInputStream.readLine();    
+        }
+        catch(Exception e1){
+           
         }
         try {
             if (theSocket != null) {
@@ -119,8 +110,20 @@ public class Client extends JFrame implements ActionListener {
 
         } catch (IOException e1) {
         }
-        f.dispose();
+        try{
+            theSocket = new Socket("127.0.0.1", 6000);
+            theOutputStream = new PrintStream(theSocket.getOutputStream());
+            theInputStream = new BufferedReader(new InputStreamReader(theSocket.getInputStream()));
+            theOutputStream.println("read");
+            rec = theInputStream.readLine(); 
+        }
+        catch(Exception e2)
+        {
 
+        }
+        f.dispose();
+        if(e.getSource()!=b2)
+        new Client();
     }
 
 }

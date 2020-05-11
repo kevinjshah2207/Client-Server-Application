@@ -20,7 +20,6 @@ import org.bson.Document;
 
 public class Server {
 
-    private Socket clientSocket;
     ServerSocket listenSocket = null;
 
     private String uri;
@@ -84,50 +83,51 @@ public class Server {
                 int ind=0;
                 theLine="";
                 try {
-                while (cursor.hasNext()) {
+                    while (cursor.hasNext()) {
 
-                    Document temp = cursor.next();
-                    String tempo= temp.get("name").toString();
-                    tempo=tempo+";"+ temp.get("no").toString();
-                    tempo=tempo+";"+ temp.get("age").toString();
-                    if(ind<len&&ind>0){
-                        theLine=theLine+":";
+                        Document temp = cursor.next();
+                        String tempo= temp.get("name").toString();
+                        tempo=tempo+";"+ temp.get("no").toString();
+                        tempo=tempo+";"+ temp.get("age").toString();
+                        if(ind<len&&ind>0){
+                            theLine=theLine+":";
+                        }
+                        theLine=theLine+tempo;
+                        ind++;
                     }
-                    theLine=theLine+tempo;
-                    ind++;
-
-                }
                 } finally {
                     cursor.close();
                 }
+                
+                    argument=in.readLine();
+                    if(argument.equals("read")){
+                        System.out.println("Read Request at Server from " + clientSocket.getPort());
+                    }
+                    else if(argument.equals("exit"))
+                    {
+                        theLine = argument;
+                        
+                    }
+                    else if(argument!=null)
+                    {
+                        System.out.println("Write Request at server from " + clientSocket.getPort());
+                        arguments = argument.split(";");
+                        document = new Document("name",arguments[0]);
+                        document.append("no", arguments[1]);
+                        document.append("age", arguments[2]);
 
+                        collection1.insertOne(document);
+                        collection2.insertOne(document);
+                        collection3.insertOne(document);
+                        collection4.insertOne(document);
 
-                String nothing=in.readLine();
-                out.println(theLine);
+                        theLine = "success";
+                    }
 
+                    out.println(theLine);
+                
 
-
-// XXXXXXX      XXXXXXXXXXXX      XXXXXXXXXXXXXXXXX          XXXXXXXXXX
-                argument = in.readLine();     // Server is not waiting for input and just asssign null value to it
-// XXXXXXX      XXXXXXXXXXXX      XXXXXXXXXXXXXXXXX          XXXXXXXXXX
-
-
-                arguments=argument.split(";");
-                document = new Document("name",arguments[0]);
-                document.append("no", arguments[1]);
-                document.append("age", arguments[2]);
-
-
-                collection1.insertOne(document);
-                collection2.insertOne(document);
-                collection3.insertOne(document);
-                collection4.insertOne(document);
-                out.println("Succesful");
-                out.println(clientSocket.getPort());
-
-
-                clientSocket.close();
-
+            clientSocket.close();
             } catch (IOException ex) {
                 Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
             }

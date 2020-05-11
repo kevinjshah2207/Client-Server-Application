@@ -4,13 +4,11 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
-import java.io.PrintStream;
 import java.util.logging.Logger;
 import java.util.*;
 
 public class Loadbalancer {
 
-    private Socket clientSocket = null;
     ServerSocket listenSocket = null;
 
     public Loadbalancer() {
@@ -25,7 +23,7 @@ public class Loadbalancer {
             int i=0;
             while (true) {
                 Socket clientSocket = listenSocket.accept();
-                //System.out.println("Request at middle server");
+                System.out.println("Request at middle server");
                 Socket socketServer;
                 while(true)
                 {
@@ -64,7 +62,7 @@ public class Loadbalancer {
     }
 
     public static void main(String[] args) {
-        Loadbalancer LB = new Loadbalancer();
+        new Loadbalancer();
     }
 
 }
