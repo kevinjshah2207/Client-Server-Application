@@ -18,6 +18,15 @@ public final class App {
      */
     public static void main(String[] args) throws IOException {
 
+        Thread thread5= new Thread(new Runnable(){
+
+            @Override
+            public void run() {
+            Server.main(new String[]{"6005"});
+
+            }
+        });
+
         Thread thread1= new Thread(new Runnable(){
 
             @Override
@@ -62,7 +71,13 @@ public final class App {
 
             }
         });
-
+        
+        thread5.start();
+        try {
+            TimeUnit.SECONDS.sleep(2);
+        } catch (InterruptedException ie) {
+            Thread.currentThread().interrupt();
+        }
         thread1.start();
         try {
             TimeUnit.SECONDS.sleep(2);

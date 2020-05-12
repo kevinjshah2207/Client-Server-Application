@@ -83,19 +83,31 @@ public class Client extends JFrame implements ActionListener {
             String argument2=tf2.getText();
             String argument3=tf3.getText();
             argument = argument1+";"+argument2+";"+argument3;
+            try{
+                theSocket = new Socket("127.0.0.1", 6000);
+                theOutputStream = new PrintStream(theSocket.getOutputStream());
+                theInputStream = new BufferedReader(new InputStreamReader(theSocket.getInputStream()));
+                theOutputStream.println(argument);
+                rec = theInputStream.readLine();    
+            }
+            catch(Exception e1){
+               
+            }
+            try{
+                theSocket = new Socket("127.0.0.1", 6000);
+                theOutputStream = new PrintStream(theSocket.getOutputStream());
+                theInputStream = new BufferedReader(new InputStreamReader(theSocket.getInputStream()));
+                theOutputStream.println("read");
+                rec = theInputStream.readLine(); 
+            }
+            catch(Exception e2)
+            {
+    
+            }
         }else if(e.getSource()==b2){
-            argument = "exit";
+            
         }
-        try{
-            theSocket = new Socket("127.0.0.1", 6000);
-            theOutputStream = new PrintStream(theSocket.getOutputStream());
-            theInputStream = new BufferedReader(new InputStreamReader(theSocket.getInputStream()));
-            theOutputStream.println(argument);
-            rec = theInputStream.readLine();    
-        }
-        catch(Exception e1){
-           
-        }
+        
         try {
             if (theSocket != null) {
                 theSocket.close();
@@ -110,17 +122,7 @@ public class Client extends JFrame implements ActionListener {
 
         } catch (IOException e1) {
         }
-        try{
-            theSocket = new Socket("127.0.0.1", 6000);
-            theOutputStream = new PrintStream(theSocket.getOutputStream());
-            theInputStream = new BufferedReader(new InputStreamReader(theSocket.getInputStream()));
-            theOutputStream.println("read");
-            rec = theInputStream.readLine(); 
-        }
-        catch(Exception e2)
-        {
-
-        }
+        
         f.dispose();
         if(e.getSource()!=b2)
         new Client();
