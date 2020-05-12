@@ -1,5 +1,5 @@
 
-# Load Balancer v1.00
+# Load Balancer
 > A simulation of a load balancing system.
 
 
